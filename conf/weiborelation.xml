@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+	博主ID,关注ID列表
+
+-->
+<configuration>
+
+<!--content properties-->
+
+
+<property>
+	<name>fid</name>
+	<key>id</key>
+</property>
+
+
+</configuration>

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+	微博内容抓取配置文件
+	微博ID,消息内容,用户id,用户名称,消息来源,发微博的时间,源微博ID,前一条转发微博id
+	转发数,评论数,点赞数
+	话题内容
+
+-->
+<configuration>
+
+<!--content properties-->
+
+<property>
+	<name>ID</name>
+	<key>id</key>
+</property>
+
+<property>
+	<name>content</name>
+	<key>text</key>
+</property>
+
+<property>
+	<name>UID</name>
+	<key>user.id</key>
+</property>
+
+<property>
+	<name>Username</name>
+	<key>user.screen_name</key>
+</property>
+
+<property>
+	<name>source</name>
+	<key>source</key>
+</property>
+
+<property>
+	<name>time</name>
+	<key>created_at</key>
+</property>
+
+<property>
+	<name>retweetID</name>
+	<key>retweeted_status.id</key>
+</property>
+
+<property>
+	<name>pid</name>
+	<key>pid</key>
+</property>
+
+<property>
+	<name>reposts</name>
+	<key>reposts_count</key>
+</property>
+
+<property>
+	<name>comment</name>
+	<key>comments_count</key>
+</property>
+
+<property>
+	<name>attitude</name>
+	<key>attitudes_count</key>
+</property>
+
+<property>
+	<name>pic</name>
+	<key>pic_ids</key>
+</property>
+
+<property>
+	<name>topic</name>
+	<key>topic_struct.topic_title</key>
+</property>
+
+</configuration>
