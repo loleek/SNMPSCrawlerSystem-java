@@ -174,7 +174,6 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 
 					crawler_type = ctype;
 				} else {
-					System.out.println(text);
 					executeCatch(text);
 				}
 			} else if (type.equals("account")) {
@@ -197,8 +196,7 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 						e.printStackTrace();
 					}
 
-					executeCatch(current_task);
-					current_task = null;
+					sendRequest();
 				} else if (crawler_type == CommonResources.WEIBO_INFO_CRAWLER) {
 					WBMobileUPClientFactory factory = new WBMobileUPClientFactory();
 					try {
@@ -226,7 +224,6 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 
 	// 执行抓取动作
 	public void executeCatch(String url) {
-		System.out.println(url);
 		try {
 			Thread.sleep(9000);
 		} catch (InterruptedException e1) {
@@ -248,8 +245,8 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 							content);
 				} catch (IOException e) {
 					System.out.println("tweetparser error");
+					jobfailure(url);
 					e.printStackTrace();
-					sendRequest();
 					return;
 				}
 			} else if (url.contains("FOLLOWERS")) {
@@ -267,8 +264,8 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 							content);
 				} catch (IOException e) {
 					System.out.println("followparser error");
+					jobfailure(url);
 					e.printStackTrace();
-					sendRequest();
 					return;
 				}
 			}
@@ -326,7 +323,11 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 			mes.setStringProperty("type", "failure");
 			mes.setStringProperty("host", hostname);
 			mes.setIntProperty("crawl-type", crawler_type);
-			mes.setText(current_account.toString());
+			
+			if(crawler_type==CommonResources.WEIBO_NORMAL_CRAWLER)
+				mes.setText(current_account.toString()+" "+url);
+			else
+				mes.setText(current_account.toString());
 			producer.send(mes);
 
 			current_account = null;

@@ -80,13 +80,13 @@ public class WeiboCrawlerMasterManager implements Manager, MessageListener {
 			if (weibo_workers.size() == 0)
 				shutdownGracefully();
 		} else {
-			
+
 			try {
 				TextMessage mes = session.createTextMessage();
 				mes.setIntProperty("carwl-type", crawler_type);
 				mes.setStringProperty("type", "close");
 				mes.setStringProperty("host", hostname);
-				
+
 				Set<String> hosts = weibo_workers.keySet();
 				for (String host : hosts) {
 					weibo_workers.get(host).send(mes);
@@ -94,7 +94,7 @@ public class WeiboCrawlerMasterManager implements Manager, MessageListener {
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
-			
+
 			shutdownGracefully();
 		}
 	}
@@ -174,14 +174,31 @@ public class WeiboCrawlerMasterManager implements Manager, MessageListener {
 					}
 
 					WeiboAccount newaccount = accountManager.getAccount();
-					TextMessage mes = session.createTextMessage();
+					if (newaccount != null) {
+						TextMessage mes = session.createTextMessage();
 
-					mes.setStringProperty("type", "account");
-					mes.setIntProperty("crawl-type", crawler_type);
-					mes.setStringProperty("host", hostname);
-					mes.setText(newaccount.toString());
-					MessageProducer producer = weibo_workers.get(host);
-					producer.send(mes);
+						mes.setStringProperty("type", "account");
+						mes.setIntProperty("crawl-type", crawler_type);
+						mes.setStringProperty("host", hostname);
+						mes.setText(newaccount.toString());
+						MessageProducer producer = weibo_workers.get(host);
+						producer.send(mes);
+					}else{
+						try {
+							TextMessage mes = session.createTextMessage();
+							mes.setIntProperty("carwl-type", crawler_type);
+							mes.setStringProperty("type", "close");
+							mes.setStringProperty("host", hostname);
+
+							MessageProducer producer = weibo_workers.get(host);
+							producer.send(mes);
+							weibo_workers.remove(host);
+
+							stop(0);
+						} catch (JMSException e) {
+							e.printStackTrace();
+						}
+					}
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

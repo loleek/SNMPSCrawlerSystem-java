@@ -17,6 +17,8 @@ public class WeiboMobileResources {
 	// 个人主页地址
 	public static String USER_HOMEPAGE_URL = "http://m.weibo.cn/u/";
 
+	public static String CONTAINER_PREFIX = "100505";
+
 	// 用于拼接关系数据抓取链接
 	public static String FOLLOWS_PREFIX = "http://m.weibo.cn/page/json?containerid=";
 	public static String FOLLOWS_SUFFIX = "_-_FOLLOWERS&page=";
@@ -24,11 +26,10 @@ public class WeiboMobileResources {
 	// 用于拼接微博数据抓取链接
 	public static String WEIBOURL_PREFIX = "http://m.weibo.cn/page/json?containerid=";
 	public static String WEIBOURL_SUFFIX = "_-_WEIBO_SECOND_PROFILE_WEIBO&page=";
-	
+
 	// 用于拼接微博个人信息抓取链接
-	public static String WEIBO_MOBILE_HOMEPAGE_PREFIX="http://weibo.cn/u/";
-	public static String WEIBO_MOBILE_INFO_PREFIX="http://weibo.cn/";
-	public static String WEIBO_MOBILE_INFO_SUFFIX="/info";
-	
+	public static String WEIBO_MOBILE_HOMEPAGE_PREFIX = "http://weibo.cn/u/";
+	public static String WEIBO_MOBILE_INFO_PREFIX = "http://weibo.cn/";
+	public static String WEIBO_MOBILE_INFO_SUFFIX = "/info";
 
 }

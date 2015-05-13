@@ -217,7 +217,7 @@ public class WeiboCatchListManager {
 	}
 
 	// 若关系和微博爬虫队列为空，则从ids.txt文件中获取5个用户id进行抓取
-	public synchronized boolean getOffers() {
+	public boolean getOffers() {
 		// if (!normal_crawler_catch_queue.isEmpty()){
 		// System.out.println(normal_crawler_catch_queue.size());
 		// return true;
@@ -255,7 +255,7 @@ public class WeiboCatchListManager {
 		try {
 			String id = br.readLine();
 			if (id != null) {
-				String fid = WeiboFidGetter.catchFid(client, id);
+				String fid = WeiboMobileResources.CONTAINER_PREFIX + id;
 				if (fid != null) {
 					detailinfoids_queue.add(id);
 					System.out.println("enqueue " + id + " " + fid);
@@ -289,13 +289,13 @@ public class WeiboCatchListManager {
 								+ WeiboMobileResources.FOLLOWS_SUFFIX + j;
 						normal_crawler_catch_queue.add(url);
 					}
-				} else
-					return false;
+				}
 			} else
 				return false;
 		} catch (IOException e) {
 			System.out.println("exception hadppens");
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
