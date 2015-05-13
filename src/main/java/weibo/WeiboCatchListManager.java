@@ -63,21 +63,16 @@ public class WeiboCatchListManager {
 	public synchronized String getUrl() {
 		if (current_type == CommonResources.WEIBO_NORMAL_CRAWLER) {
 			// 如果用户id大于100就切换到个人信息爬虫抓取用户个人信息
-			if (detailinfoids_queue.size() >= 100) {
-				changeType(CommonResources.WEIBO_INFO_CRAWLER);
-				return getUrl();
+			if (!normal_crawler_catch_queue.isEmpty()) {
+				return normal_crawler_catch_queue.poll();
 			} else {
-				if (!normal_crawler_catch_queue.isEmpty()) {
+				System.out.println("normal_queue is empty");
+				if (getOffers()) {
+					System.out.println("getoffers successful");
 					return normal_crawler_catch_queue.poll();
 				} else {
-					System.out.println("normal_queue is empty");
-					if (getOffers()) {
-						System.out.println("getoffers successful");
-						return normal_crawler_catch_queue.poll();
-					} else {
-						manager.stop();
-						return "";
-					}
+					manager.stop(1);
+					return "";
 				}
 			}
 		} else if (current_type == CommonResources.WEIBO_INFO_CRAWLER) {
@@ -203,8 +198,6 @@ public class WeiboCatchListManager {
 			}
 			idreader.close();
 
-			file.delete();
-
 			file = new File(CommonResources.WEIBO_CATCH_LIST_LOCATION);
 
 			PrintWriter out = new PrintWriter(file);
@@ -239,7 +232,7 @@ public class WeiboCatchListManager {
 				persist();
 				System.out
 						.println("have no account...crawler will shutdown...");
-				manager.stop();
+				manager.stop(1);
 			} else {
 				LoginClientFactory factory = new WBMobileUPClientFactory();
 				try {

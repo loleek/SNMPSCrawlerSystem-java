@@ -8,5 +8,5 @@ package core;
 public interface Manager {
 	public void start();
 
-	public void stop();
+	public void stop(int level);
 }

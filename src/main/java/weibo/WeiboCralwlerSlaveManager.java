@@ -83,7 +83,7 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 	}
 
 	// 管理爬虫
-	public void stop() {
+	public void stop(int level) {
 		shutdownGracefully();
 	}
 
@@ -218,7 +218,7 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 					crawler_type = CommonResources.WEIBO_TOPIC_CRAWLER;
 				}
 			} else if (type.equals("close")) {
-				stop();
+				stop(0);
 			}
 
 		}
@@ -228,7 +228,7 @@ public class WeiboCralwlerSlaveManager implements Manager, MessageListener {
 	public void executeCatch(String url) {
 		System.out.println(url);
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(9000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}

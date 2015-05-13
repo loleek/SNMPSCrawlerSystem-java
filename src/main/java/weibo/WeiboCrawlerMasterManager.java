@@ -74,10 +74,29 @@ public class WeiboCrawlerMasterManager implements Manager, MessageListener {
 	}
 
 	// 若运行中的爬虫全部关闭则关闭主节点
-	public void stop() {
-		waitforclose = true;
-		if (weibo_workers.size() == 0)
+	public void stop(int level) {
+		if (level == 0) {
+			waitforclose = true;
+			if (weibo_workers.size() == 0)
+				shutdownGracefully();
+		} else {
+			
+			try {
+				TextMessage mes = session.createTextMessage();
+				mes.setIntProperty("carwl-type", crawler_type);
+				mes.setStringProperty("type", "close");
+				mes.setStringProperty("host", hostname);
+				
+				Set<String> hosts = weibo_workers.keySet();
+				for (String host : hosts) {
+					weibo_workers.get(host).send(mes);
+				}
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+			
 			shutdownGracefully();
+		}
 	}
 
 	public void onMessage(Message message) {
@@ -120,12 +139,14 @@ public class WeiboCrawlerMasterManager implements Manager, MessageListener {
 						MessageProducer producer = weibo_workers.get(host);
 						producer.send(mes);
 						weibo_workers.remove(host);
+
+						stop(0);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}
 				} else {
 					String url = catchListManager.getUrl();
-					
+
 					try {
 						TextMessage mes = session.createTextMessage();
 						mes.setIntProperty("crawl-type", crawler_type);
